@@ -1,7 +1,7 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
-class PhoneEntry
-{
+class PhoneEntry {
   //private String name;    // name of a person
   private String phone;   // their phone number
 
@@ -18,8 +18,8 @@ class PhoneEntry
   public String getFullName() {return firstName + " " + lastName;}
 }
 
-class PhoneBook
-{
+class PhoneBook {
+
   private PhoneEntry[] phoneBook;
 
   public PhoneBook()    // constructor
@@ -34,31 +34,49 @@ class PhoneBook
 
   }
 
-  public PhoneEntry search( String targetFirstName , String targetLastName) {
+  public PhoneEntry[] search( String targetFirstName , String targetLastName) {
 
-    if (targetFirstName != null) {
+    PhoneEntry[] matches;
 
-      for ( int j=0; j < phoneBook.length; j++ ) {
-        if ( phoneBook[j] != null && phoneBook[j].getName().toUpperCase().equals( targetFirstName + targetLastName ) )
-          return phoneBook[j];
+    int numberOfMatches = 0;
+    for (int k=0; k < phoneBook.length; k++) {
+      if ( phoneBook[k] != null && phoneBook[k].getLastName().toUpperCase().equals( targetLastName ) ) {
+        numberOfMatches++;
+      }
+
+    }
+    matches = new PhoneEntry[numberOfMatches];
+    int x = 0;
+    boolean matchFound = false;
+
+
+    if (targetFirstName.equals("")) {
+
+      for (int k=0; k < phoneBook.length; k++) {
+        if ( phoneBook[k] != null && phoneBook[k].getLastName().toUpperCase().equals( targetLastName )) {
+          matches[x] = phoneBook[k];
+          x++;
+          
+        }
+
+      }
+      return matches;
+
+    }
+    for ( int j=0; j < phoneBook.length; j++ ) {
+      if ( phoneBook[j] != null && phoneBook[j].getName().toUpperCase().equals( targetFirstName + targetLastName ) ) {
+        matches[0] = phoneBook[j];
       }
     }
 
-    for (int k=0; k < phoneBook.length; k++) {
-      if ( phoneBook[k] != null && phoneBook[k].getLastName().toUpperCase().equals( targetLastName ) )
+    return matches;
 
-        System.out.println( phoneBook[k].getFullName() + ": " + phoneBook[k].getPhone() );
-
-    }
-
-    return null;
   }
 }
 
-public class PhoneBookTester
-{
-  public static void main ( String[] args )
-  {
+public class PhoneBookTester {
+
+  public static void main ( String[] args ) {
     PhoneBook pb = new PhoneBook();
 
     System.out.println("Last name?");
@@ -72,12 +90,18 @@ public class PhoneBookTester
 
 
     // search for user given name
-    PhoneEntry entry = pb.search( searchFirstName.toUpperCase(), searchLastName.toUpperCase());
+    PhoneEntry[] entry = pb.search( searchFirstName.toUpperCase(), searchLastName.toUpperCase());
+    //entry = pb.search( searchFirstName.toUpperCase(), searchLastName.toUpperCase());
+    for (int z = 0; z < entry.length; z++) {
 
-    if ( entry != null )
-      System.out.println( entry.getFullName() + ": " + entry.getPhone() );
-    else
-      System.out.println("Name not found" );
-
+      if ( entry[z] != null ) {
+        System.out.println( entry[z].getFullName() + ": " + entry[z].getPhone() );
+      } else {
+        //System.out.println("");
+      }
+    }
+    if (entry.length < 1) {
+      System.out.println("Name not found");
+    }
   }
 }
